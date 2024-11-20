@@ -8,7 +8,7 @@ export const Main = () => {
       <div>
         <Navbar />
       </div>
-      <div>
+      <div className="min-h-screen">
         <Outlet />
       </div>
       <div>

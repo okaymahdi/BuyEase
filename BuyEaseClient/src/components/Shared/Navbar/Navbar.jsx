@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { FaTimes } from 'react-icons/fa'
 import { FaBarsStaggered } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
@@ -116,6 +117,10 @@ const Navbar = () => {
       </nav>
     </header>
   )
+}
+
+NavItem.propTypes = {
+  handleMenu: PropTypes.func.isRequired,
 }
 
 export default Navbar
