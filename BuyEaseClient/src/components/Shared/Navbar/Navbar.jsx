@@ -1,9 +1,6 @@
-import PropTypes from 'prop-types'
-import { FaTimes } from 'react-icons/fa'
-import { FaBarsStaggered } from 'react-icons/fa6'
 import { Link, NavLink } from 'react-router-dom'
-
-import { useState } from 'react'
+import useAuth from '../../../Hooks/useAuth'
+import UserDropdown from './UserDropdown'
 
 const NavItems = [
   { path: '/', label: 'Home' },
@@ -12,11 +9,11 @@ const NavItems = [
   { path: '/contact', label: 'Contact' },
 ]
 
-const NavItem = ({ handleMenu }) => {
+const NavLinks = () => {
   return (
     <ul className="flex flex-col md:flex-row items-center md:space-x-8 gap-8">
       {NavItems.map((item, idx) => (
-        <li key={idx} onClick={handleMenu}>
+        <li key={idx}>
           <NavLink
             to={item.path}
             className={({ isActive }) =>
@@ -34,93 +31,71 @@ const NavItem = ({ handleMenu }) => {
 }
 
 const Navbar = () => {
-  const [toggleMenu, setToggleMenu] = useState(false)
-  const handleMenu = () => {
-    setToggleMenu((prevState) => !prevState)
-  }
+  const { user } = useAuth()
   return (
-    <header>
-      <nav className="container mx-auto max-w-screen-2xl flex justify-between items-center py-6 px-4">
-        {/* Logo */}
+    <div className="navbar bg-base-100 fixed top-0 z-50">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+            <NavLinks />
+          </ul>
+        </div>
         <Link to="/" className="text-2xl text-Red font-Secondary font-bold">
           Buy<span className="text-Dark_1">Ease</span>
         </Link>
-
-        {/* Hamberger */}
-        <div
-          onClick={handleMenu}
-          className="md:hidden cursor-pointer text-xl text-Dark_2 hover:text-Red"
-        >
-          {toggleMenu ? null : <FaBarsStaggered />}
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <NavLinks />
+        </ul>
+      </div>
+      {user ? (
+        <div className="navbar-end">
+          <UserDropdown />
         </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={`fixed top-0 left-0 w-full h-screen bg-white text-white flex flex-col justify-center items-center space-y-8 transition-transform transform ${
-            toggleMenu ? 'translate-x-0' : '-translate-x-full'
-          } md:hidden`}
-        >
-          <div
-            className="cursor-pointer py-3 text-2xl text-Dark_2 hover:text-Red absolute top-4 right-4"
-            onClick={handleMenu}
-          >
-            <FaTimes />
-          </div>
-          <div onClick={handleMenu}>
-            <NavItem />
-
-            <div className="flex flex-col gap-8 mt-8">
-              <Link to="/login">
-                <button
-                  type="submit"
-                  className="w-full font-bold bg-Dark_1 text-gray-50 py-2 px-4 rounded-md border border-Dark_1 hover:border-Dark_1 outline-none hover:bg-gray-50 hover:text-Dark_1 transition-all duration-1000 delay-75 ease-in-out"
-                >
-                  Login
-                </button>
-              </Link>
-              <Link to="/register">
-                <button
-                  type="submit"
-                  className="font-bold text-Red py-2 px-4 rounded-md border border-Red bg-gray-50 hover:bg-Red outline-none hover:text-gray-50 transition-all duration-1000 delay-75 ease-in-out"
-                >
-                  Register
-                </button>
-              </Link>
-            </div>
+      ) : (
+        <div className="navbar-end">
+          <div className="flex items-center gap-2">
+            <Link to="/login">
+              <button
+                type="submit"
+                className="btn bg-Dark_1 text-gray-50 py-2 px-4 rounded-md border border-Dark_1 hover:border-Dark_1 outline-none hover:bg-gray-50 hover:text-Dark_1 transition-all duration-1000 delay-75 ease-in-out"
+              >
+                Login
+              </button>
+            </Link>
+            <Link to="/register">
+              <button
+                type="submit"
+                className="btn bg-[#9836FF] text-gray-50 py-2 px-4 rounded-md border border-Red hover:border-Red outline-none hover:bg-gray-50 hover:text-Red transition-all duration-1000 delay-75 ease-in-out"
+              >
+                Register
+              </button>
+            </Link>
           </div>
         </div>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:block">
-          <NavItem />
-        </div>
-
-        {/* Login Register Buttons */}
-        <div className="hidden md:flex items-center gap-2">
-          <Link to="/login">
-            <button
-              type="submit"
-              className="font-bold bg-Dark_1 text-gray-50 py-2 px-4 rounded-md border border-Dark_1 hover:border-Dark_1 outline-none hover:bg-gray-50 hover:text-Dark_1 transition-all duration-1000 delay-75 ease-in-out"
-            >
-              Login
-            </button>
-          </Link>
-          <Link to="/register">
-            <button
-              type="submit"
-              className="font-bold text-Red py-2 px-4 rounded-md border border-Red bg-gray-50 hover:bg-Red outline-none hover:text-gray-50 transition-all duration-1000 delay-75 ease-in-out"
-            >
-              Register
-            </button>
-          </Link>
-        </div>
-      </nav>
-    </header>
+      )}
+    </div>
   )
-}
-
-NavItem.propTypes = {
-  handleMenu: PropTypes.func.isRequired,
 }
 
 export default Navbar

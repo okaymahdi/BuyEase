@@ -16,7 +16,7 @@ const ProductCard = () => {
           <Link to="/login">
             <button
               type="submit"
-              className="font-bold bg-Red text-gray-50 py-2 px-4 rounded-md border border-Red hover:border-Red outline-none hover:bg-gray-50 hover:text-Red transition-all duration-1000 delay-75 ease-in-out"
+              className="font-bold bg-gray-50 text-Red py-2 px-4 rounded-md border border-Red hover:border-Red outline-none hover:bg-Red hover:text-gray-50 transition-all duration-1000 delay-75 ease-in-out"
             >
               Details
             </button>
