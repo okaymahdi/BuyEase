@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const app = express()
 
@@ -37,6 +38,15 @@ dbConnect().catch(console.dir)
 // API
 app.get('/', (req, res) => {
   res.send('BuyEaseServer is Running')
+})
+
+// JWT
+app.post('/authentication', async (req, res) => {
+  const userEmail = req.body
+  const token = jwt.sign(userEmail, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '10d',
+  })
+  res.send({ token })
 })
 
 app.listen(port, () => {
