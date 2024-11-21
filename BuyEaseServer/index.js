@@ -7,7 +7,7 @@ const app = express()
 const port = process.env.PORT || 4000
 
 // Middleware
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:5173', optionsSuccessStatus: 200 }))
 app.use(express.json())
 
 // MongoDB
@@ -23,13 +23,38 @@ const client = new MongoClient(uri, {
   },
 })
 
+// Database Collections
+const usersCollection = client.db('BuyEase').collection('users')
+const productsCollection = client.db('BuyEase').collection('products')
+
 const dbConnect = async () => {
   try {
     await client.connect()
-    await client.db('admin').command({ ping: 1 })
     console.log('BuyEaseServer successfully connected to MongoDB!')
-  } finally {
-    await client.close()
+
+    // Get User
+    app.get('/user/:email', async (req, res) => {
+      const query = { email: req.params.email }
+      const user = await usersCollection.findOne(query)
+
+      res.send(user)
+      console.log(`user: ${user}`)
+    })
+
+    // Insert Users Collection
+    app.post('/users', async (req, res) => {
+      const user = req.body
+      const query = { email: user.email }
+      const existingUser = await usersCollection.findOne(query)
+      if (existingUser) {
+        return res.send({ message: 'User already exists' })
+      } else {
+        const result = await usersCollection.insertOne(user)
+        res.send(result)
+      }
+    })
+  } catch (error) {
+    console.log(error.name, error.message)
   }
 }
 
@@ -41,6 +66,7 @@ app.get('/', (req, res) => {
 })
 
 // JWT
+
 app.post('/authentication', async (req, res) => {
   const userEmail = req.body
   const token = jwt.sign(userEmail, process.env.ACCESS_TOKEN_SECRET, {
