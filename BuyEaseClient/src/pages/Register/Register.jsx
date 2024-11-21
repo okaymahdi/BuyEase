@@ -76,7 +76,14 @@ const Register = () => {
               id="password"
               placeholder="********"
               className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-Dark_1 focus:dark:border-Red"
-              {...register('password', { required: true, minLength: 8 })}
+              {...register('password', {
+                required: true,
+                minLength: 8,
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$/,
+                },
+              })}
             />
             {errors.password?.type === 'required' && (
               <p className="text-sm font-light text-red-500">
