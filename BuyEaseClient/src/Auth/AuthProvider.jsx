@@ -58,12 +58,12 @@ const AuthProvider = ({ children }) => {
 
   // Unsubscribe from Auth State
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user)
-      if (user) {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+      if (currentUser) {
         axios
           .post(`http://localhost:4000/authentication`, {
-            email: user.email,
+            email: currentUser.email,
           })
           .then((data) => {
             if (data.data) {

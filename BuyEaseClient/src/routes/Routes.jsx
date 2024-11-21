@@ -9,6 +9,7 @@ import Login from '../pages/Login/Login'
 import Products from '../pages/Products/Products'
 import Register from '../pages/Register/Register'
 import PrivateRoute from './Private/PrivateRoute'
+import Overview from '../pages/Dashboard/Overview'
 
 export const router = createBrowserRouter(
   [
@@ -50,7 +51,12 @@ export const router = createBrowserRouter(
           <Dashboard />
         </PrivateRoute>
       ),
-      children: [{}],
+      children: [
+        {
+          path: '/dashboard/overview',
+          element: <Overview />,
+        },
+      ],
     },
   ],
 

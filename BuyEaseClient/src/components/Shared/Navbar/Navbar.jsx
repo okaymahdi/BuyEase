@@ -18,7 +18,7 @@ const NavLinks = () => {
             to={item.path}
             className={({ isActive }) =>
               isActive
-                ? 'text-Red font-bold'
+                ? 'text-Red text-lg'
                 : 'font-semibold text-lg text-Dark_2 hover:text-Red transition-all duration-1000 delay-75 ease-in-out'
             }
           >
