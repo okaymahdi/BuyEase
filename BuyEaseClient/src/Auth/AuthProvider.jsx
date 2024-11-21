@@ -12,6 +12,7 @@ import {
 import { createContext, useEffect, useState } from 'react'
 import { app } from '../Firebase/Firebase'
 
+import axios from 'axios'
 import PropTypes from 'prop-types'
 
 export const AuthContext = createContext(null)
@@ -59,8 +60,21 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user)
-      setLoading(false)
-      console.log(user)
+      if (user) {
+        axios
+          .post(`http://localhost:4000/authentication`, {
+            email: user.email,
+          })
+          .then((data) => {
+            if (data.data) {
+              localStorage.setItem('access-token', data?.data?.token)
+              setLoading(false)
+            }
+          })
+      } else {
+        localStorage.removeItem('access-token')
+        setLoading(false)
+      }
     })
     return () => {
       return unsubscribe()

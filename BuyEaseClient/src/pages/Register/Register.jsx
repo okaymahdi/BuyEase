@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import GitHubLogin from '../../components/SocialsLogin/GitHubLogin'
 import GoogleLogin from '../../components/SocialsLogin/GoogleLogin'
 import useAuth from '../../Hooks/useAuth'
 
@@ -38,7 +37,6 @@ const Register = () => {
       </p>
       <div className="my-6 space-y-4">
         <GoogleLogin />
-        <GitHubLogin />
       </div>
       <div className="flex items-center w-full my-4">
         <hr className="w-full dark:text-Dark_2" />
