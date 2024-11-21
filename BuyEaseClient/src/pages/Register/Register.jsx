@@ -1,7 +1,9 @@
+import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import GoogleLogin from '../../components/SocialsLogin/GoogleLogin'
 import useAuth from '../../Hooks/useAuth'
+import Swal from 'sweetalert2'
 
 const Register = () => {
   const { CreateUser } = useAuth()
@@ -15,9 +17,26 @@ const Register = () => {
 
   const navigate = useNavigate()
   const handleForm = (data) => {
-    console.log(data)
+    const email = data.email
+    const role = data.role
+    const stutus = role === 'buyer' ? 'Approved' : 'Pending'
+    const wishlist = []
+    const userData = { email, role, stutus, wishlist }
+    console.log(userData)
     CreateUser(data.email, data.password).then(() => {
-      navigate('/login')
+      axios.post('http://localhost:4000/users', userData).then((res) => {
+        console.log(res.data)
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Your Registration is Successful',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+          navigate('/')
+        }
+      })
     })
   }
   return (
@@ -79,10 +98,10 @@ const Register = () => {
               {...register('password', {
                 required: true,
                 minLength: 8,
-                pattern: {
-                  value:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$/,
-                },
+                // pattern: {
+                //   value:
+                //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$/,
+                // },
               })}
             />
             {errors.password?.type === 'required' && (
@@ -135,9 +154,6 @@ const Register = () => {
               className="  w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-Dark_1 focus:dark:border-Red"
               {...register('role', { required: true })}
             >
-              <option disabled selected>
-                Who are You?
-              </option>
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
             </select>
