@@ -86,7 +86,7 @@ const Navbar = () => {
             <Link to="/register">
               <button
                 type="submit"
-                className="btn bg-[#9836FF] text-gray-50 py-2 px-4 rounded-md border border-Red hover:border-Red outline-none hover:bg-gray-50 hover:text-Red transition-all duration-1000 delay-75 ease-in-out"
+                className="btn bg-Red text-gray-50 py-2 px-4 rounded-md border border-Red hover:border-Red outline-none hover:bg-gray-50 hover:text-Red transition-all duration-1000 delay-75 ease-in-out"
               >
                 Register
               </button>

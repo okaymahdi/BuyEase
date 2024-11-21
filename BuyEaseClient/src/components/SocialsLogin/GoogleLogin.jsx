@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import useAuth from '../../Hooks/useAuth'
 
 const GoogleLogin = () => {
+  const { GoogleLogin } = useAuth()
   const navigate = useNavigate()
 
   const handleGoogleLogin = () => {
