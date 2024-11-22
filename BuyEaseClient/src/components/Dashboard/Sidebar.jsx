@@ -60,7 +60,7 @@ const Sidebar = () => {
                 to={route.route}
                 className={({ isActive }) =>
                   isActive
-                    ? 'flex items-center justify-center gap-2 border border-Red rounded-lg py-3 px-4 text-Red text-lg font-semibold'
+                    ? 'flex items-center justify-center gap-2 border border-Red rounded-lg py-3 text-Red text-lg font-semibold'
                     : 'flex items-center justify-center gap-2 font-semibold text-lg text-Dark_2 py-3 border border-Dark_3 rounded-lg hover:border-Red hover:text-Red  transition-all duration-1000 delay-75 ease-in-out'
                 }
               >

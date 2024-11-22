@@ -3,13 +3,16 @@ import Dashboard from '../layouts/Dashboard'
 import { Main } from '../layouts/Main'
 import About from '../pages/About/About'
 import Contact from '../pages/Contact/Contact'
+import Overview from '../pages/Dashboard/Overview'
 import ErrorPage from '../pages/ErrorPage'
 import Home from '../pages/Home/Home'
 import Login from '../pages/Login/Login'
 import Products from '../pages/Products/Products'
 import Register from '../pages/Register/Register'
+import AddProduct from '../pages/Seller/AddProduct'
+import MyProducts from '../pages/Seller/MyProducts'
 import PrivateRoute from './Private/PrivateRoute'
-import Overview from '../pages/Dashboard/Overview'
+import SellerRoute from './Private/SellerRoute'
 
 export const router = createBrowserRouter(
   [
@@ -55,6 +58,24 @@ export const router = createBrowserRouter(
         {
           path: '/dashboard/overview',
           element: <Overview />,
+        },
+
+        // seller routes
+        {
+          path: '/dashboard/add-product',
+          element: (
+            <SellerRoute>
+              <AddProduct />
+            </SellerRoute>
+          ),
+        },
+        {
+          path: '/dashboard/my-products',
+          element: (
+            <SellerRoute>
+              <MyProducts />
+            </SellerRoute>
+          ),
         },
       ],
     },
