@@ -98,10 +98,10 @@ const Register = () => {
               {...register('password', {
                 required: true,
                 minLength: 8,
-                // pattern: {
-                //   value:
-                //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$/,
-                // },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^])[A-Za-z\d@$!%*?&#^]{8,}$/,
+                },
               })}
             />
             {errors.password?.type === 'required' && (
