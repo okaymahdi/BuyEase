@@ -10,6 +10,33 @@ const port = process.env.PORT || 4000
 app.use(cors({ origin: 'http://localhost:5173', optionsSuccessStatus: 200 }))
 app.use(express.json())
 
+// JWT Token Varification
+const verifyJWT = (req, res, next) => {
+  const authorization = req.headers.authorization
+  if (!authorization) {
+    return res.send({ message: 'unauthorized access' })
+  }
+  const token = authorization.split(' ')[1]
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.send({ message: 'unauthorized access' })
+    }
+    req.decoded = decoded
+    next()
+  })
+}
+
+// Seller Verification
+const verifySeller = async (req, res, next) => {
+  const email = req.decoded.email
+  const query = { email: email }
+  const user = await usersCollection.findOne(query)
+  if (user?.role !== 'seller') {
+    return res.send({ message: 'forbidden access' })
+  }
+  next()
+}
+
 // MongoDB
 
 const { MongoClient, ServerApiVersion } = require('mongodb')
@@ -24,8 +51,8 @@ const client = new MongoClient(uri, {
 })
 
 // Database Collections
-const usersCollection = client.db('BuyEase').collection('users')
-const productsCollection = client.db('BuyEase').collection('products')
+const usersCollection = client.db('BuyEase').collection('Users')
+const productsCollection = client.db('BuyEase').collection('Products')
 
 const dbConnect = async () => {
   try {
@@ -52,6 +79,13 @@ const dbConnect = async () => {
         const result = await usersCollection.insertOne(user)
         res.send(result)
       }
+    })
+
+    // Add Product Collection
+    app.post('/add-product', varifyJWT, verifySeller, async (req, res) => {
+      const product = req.body,
+        result = await productsCollection.insertOne(product)
+      res.send(result)
     })
   } catch (error) {
     console.log(error.name, error.message)
